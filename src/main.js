@@ -3,11 +3,22 @@ import App from "./App.vue";
 import "./registerServiceWorker";
 import router from "./router";
 import store from "./store";
-import { LMap, LTileLayer } from "vue2-leaflet";
-import 'leaflet/dist/leaflet.css'
+import {
+  LMap,
+  LTileLayer,
+  LMarker,
+  LIcon,
+  LTooltip,
+  LControl,
+} from "vue2-leaflet";
+import "leaflet/dist/leaflet.css";
 
 Vue.component("l-map", LMap);
 Vue.component("l-tile-layer", LTileLayer);
+Vue.component("l-marker", LMarker);
+Vue.component("l-icon", LIcon);
+Vue.component("l-tooltip", LTooltip);
+Vue.component("l-control", LControl);
 
 Vue.config.productionTip = false;
 
