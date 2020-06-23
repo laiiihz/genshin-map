@@ -1,5 +1,10 @@
 # genshin-map
+![](./github/logo.webp)
 
+## Website
+[中文用户地图](http://laiiihz.gitee.io/genshin-map-web)
+
+[English Users'map(not release)](#)
 ## Project setup
 ```
 yarn install
@@ -20,5 +25,3 @@ yarn build
 yarn lint
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
