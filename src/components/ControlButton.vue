@@ -1,36 +1,84 @@
 <template>
   <div>
     <transition name="fade">
-      <div v-if="maskOn" @click="maskOn = false" class="control-mask"></div>
+      <div v-if="maskOn" @click="handleMaskOff" class="control-mask"></div>
     </transition>
     <div
-      @click="maskOn = true"
+      @click="handleMaskOn"
       class="control-button"
       :style="[controlButtonStyle]"
     >
-      <div></div>
       <transition name="fade">
-        <i v-show="!maskOn" :class="['material-icons', 'control-icon']">add</i>
+        <i v-if="!buttonMaskOn" :class="['material-icons', 'control-icon']"
+          >add</i
+        >
+        <div v-else>
+          <v-container ref="containerRef" fluid style="padding: 5px 10px;">
+            <v-row dense style="text-align: center;">
+              <v-col
+                v-for="item in Object.keys(genshinObjects)"
+                :key="item"
+                cols="4"
+              >
+                <v-checkbox dark :value="item" v-model="checked">
+                  <template slot="label">
+                    <img
+                      height="25"
+                      :src="`./img/icons/underground.png`"
+                      alt=""
+                    />{{ genshinObjects[item].name }}
+                  </template>
+                </v-checkbox>
+              </v-col>
+            </v-row>
+          </v-container>
+        </div>
       </transition>
     </div>
   </div>
 </template>
 
 <script>
+import genshinObjects from "../genshinObjects/genshinObjects";
 export default {
   name: "ControlButton",
   data: () => ({
     maskOn: false,
+    buttonMaskOn: false,
+    genshinObjects: genshinObjects,
   }),
-  methods: {},
+  methods: {
+    handleMaskOn() {
+      this.maskOn = true;
+      setTimeout(() => {
+        this.buttonMaskOn = true;
+      }, 300);
+    },
+    handleMaskOff() {
+      this.buttonMaskOn = false;
+      setTimeout(() => {
+        this.maskOn = false;
+      }, 100);
+    },
+  },
   computed: {
     controlButtonStyle() {
       return {
-        height: this.maskOn ? "100px" : "50px",
+        height: this.maskOn ? "90px" : "50px",
         width: this.maskOn ? "calc(100% - 40px)" : "50px",
         cursor: this.maskOn ? "unset" : "pointer",
         maxWidth: "500px",
+        minHeight: "50px",
       };
+    },
+    checked: {
+      set(val) {
+        this.$store.commit("changeChecked", val);
+        console.log(this.$store.state.genshinChecked.indexOf('underground')!==-1);
+      },
+      get() {
+        return this.$store.state.genshinChecked;
+      },
     },
   },
 };
@@ -58,30 +106,12 @@ export default {
   background-color: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.3);
+  overflow: hidden;
 }
 .control-icon {
   position: absolute;
   left: 12px;
   top: 12px;
   color: white;
-}
-
-/*
-fade
-*/
-.fade-enter-active {
-  transition: all 0.3s ease-in-out;
-}
-
-.fade-enter {
-  opacity: 0;
-}
-
-.fade-leave-active {
-  transition: all 0.3s ease-in-out;
-}
-
-.fade-leave-to {
-  opacity: 0;
 }
 </style>

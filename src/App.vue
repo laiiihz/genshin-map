@@ -15,25 +15,30 @@
         :tile-size="256"
         no-wrap
       ></l-tile-layer>
-      <l-marker
-        :lat-lng="markerLatLng"
-        draggable
-        @update:lat-lng="updateLatLngMarker"
-      >
-        <l-icon icon-url="./favicon.ico"></l-icon>
-      </l-marker>
+      <l-control position="topright">
+        <v-btn rounded dark text>
+          <span style="text-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);"
+            >github@laiiihz</span
+          >
+        </v-btn>
+      </l-control>
       <!--  underground    -->
-      <l-marker
-        v-for="item in genshinObjects.underground.objects"
-        :key="item.name"
-        :lat-lng="item.pos"
-      >
-        <l-tooltip>{{ item.des }}</l-tooltip>
-        <l-icon
-          icon-url="./img/icons/underground.png"
-          :icon-size="[40, 40]"
-        ></l-icon>
-      </l-marker>
+      <div v-if="$store.state.genshinChecked.indexOf('underground') !== -1">
+        <l-marker
+          v-for="item in genshinObjects.underground.objects"
+          :key="item.name"
+          :lat-lng="item.pos"
+        >
+          <l-tooltip>
+            <h2>{{ item.des }}</h2>
+            <div style="height: 200px; width: 200px;"></div
+          ></l-tooltip>
+          <l-icon
+            :icon-url="genshinObjects.underground.icons[item.pic]"
+            :icon-size="[40, 40]"
+          ></l-icon>
+        </l-marker>
+      </div>
     </l-map>
     <control-button></control-button>
     <start-up-mask></start-up-mask>
@@ -52,7 +57,6 @@ export default {
     zoom: 2,
     center: [-128, 128],
     crs: CRS.Simple,
-    markerLatLng: [-128, 128],
     genshinObjects: genshinObjects,
   }),
   methods: {
@@ -61,10 +65,6 @@ export default {
     },
     updateCenter(value) {
       this.center = value;
-    },
-    updateLatLngMarker(value) {
-      this.markerLatLng = value;
-      console.log(`[${[value.lat, value.lng]}]`);
     },
   },
   mounted() {
@@ -84,5 +84,23 @@ html {
 #genshin-map {
   height: 100%;
   width: 100%;
+}
+/*
+fade
+*/
+.fade-enter-active {
+  transition: all 0.3s ease-in-out;
+}
+
+.fade-enter {
+  opacity: 0;
+}
+
+.fade-leave-active {
+  transition: all 0.3s ease-in-out;
+}
+
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
