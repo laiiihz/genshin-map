@@ -24,7 +24,7 @@
                   <template slot="label">
                     <img
                       height="25"
-                      :src="`./img/icons/underground.png`"
+                      :src="genshinObjects[item].icons[0]"
                       alt=""
                     />{{ genshinObjects[item].name }}
                   </template>
@@ -74,7 +74,6 @@ export default {
     checked: {
       set(val) {
         this.$store.commit("changeChecked", val);
-        console.log(this.$store.state.genshinChecked.indexOf('underground')!==-1);
       },
       get() {
         return this.$store.state.genshinChecked;

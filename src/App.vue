@@ -22,22 +22,34 @@
           >
         </v-btn>
       </l-control>
-      <!--  underground    -->
-      <div v-if="$store.state.genshinChecked.indexOf('underground') !== -1">
-        <l-marker
-          v-for="item in genshinObjects.underground.objects"
-          :key="item.name"
-          :lat-lng="item.pos"
-        >
-          <l-tooltip>
-            <h2>{{ item.des }}</h2>
-            <div style="height: 200px; width: 200px;"></div
-          ></l-tooltip>
-          <l-icon
-            :icon-url="genshinObjects.underground.icons[item.pic]"
-            :icon-size="[40, 40]"
-          ></l-icon>
-        </l-marker>
+      <!--dev-marker-->
+      <dev-marker disabled></dev-marker>
+      <!--markers-->
+      <div
+        v-for="genshinObject in Object.keys(genshinObjects)"
+        :key="genshinObject"
+      >
+        <div v-if="$store.state.genshinChecked.indexOf(genshinObject) !== -1">
+          <l-marker
+            v-for="item in genshinObjects[genshinObject].objects"
+            :key="item.name"
+            :lat-lng="item.pos"
+            ><l-tooltip>
+              <h2>{{ item.name }}</h2>
+              <div style="width: 200px; padding: 10px;">
+                <p v-if="item.pos">{{ item.location }}</p>
+              </div></l-tooltip
+            >
+            <l-icon :icon-anchor="[17, 17]" style="position: relative;">
+              <img
+                height="34"
+                width="34"
+                :src="genshinObjects[genshinObject].icons[item.pic]"
+                alt=""
+              />
+            </l-icon>
+          </l-marker>
+        </div>
       </div>
     </l-map>
     <control-button></control-button>
@@ -49,9 +61,10 @@ import StartUpMask from "./components/StartUpMask";
 import { CRS } from "leaflet";
 import genshinObjects from "./genshinObjects/genshinObjects";
 import ControlButton from "./components/ControlButton";
+import DevMarker from "./components/DevMarker";
 export default {
   name: "app",
-  components: { ControlButton, StartUpMask },
+  components: { DevMarker, ControlButton, StartUpMask },
   data: () => ({
     url: "",
     zoom: 2,
