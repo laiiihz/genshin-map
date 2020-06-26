@@ -11,7 +11,7 @@
       :crs="crs"
     >
       <l-tile-layer
-        url="./img/{z}/map_{y}_{x}.png"
+        url="./img/{z}/map_{y}_{x}.webp"
         :tile-size="256"
         no-wrap
       ></l-tile-layer>
